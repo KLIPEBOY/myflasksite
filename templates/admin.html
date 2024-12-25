@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Админ-панель</h1>
+        <a href="{{ url_for('index') }}">На главную</a>
+    </header>
+    <main>
+        <h2>Добавить билет</h2>
+        <form method="POST" action="{{ url_for('admin') }}">
+            <input type="text" name="title" placeholder="Название" required>
+            <input type="text" name="artist" placeholder="Артист" required>
+            <input type="text" name="location" placeholder="Локация" required>
+            <input type="text" name="city" placeholder="Город" required>
+            <input type="number" step="0.01" name="price" placeholder="Цена" required>
+            <input type="number" name="quantity" placeholder="Количество" required>
+            <button type="submit">Добавить</button>
+        </form>        
+        <h2>Все билеты</h2>
+        <ul>
+            {% for ticket in tickets %}
+                <li>{{ ticket['title'] }} - {{ ticket['price'] }} ₽</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Личный кабинет</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">На главную</a>
+            <a href="{{ url_for('logout') }}">Выход</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Добро пожаловать, {{ user['username'] }}</h2>
+            <p>Ваш баланс: <strong>{{ user['balance'] }} ₽</strong></p>
+        </section>
+        
+        <section class="form-container">
+            <h2>Пополнить баланс</h2>
+            <form method="POST" action="{{ url_for('add_balance') }}">
+                <label for="amount">Сумма:</label>
+                <input type="number" id="amount" name="amount" step="0.01" required>
+                <button type="submit">Пополнить</button>
+            </form>
+        </section>
+        
+        <section class="tickets">
+            <h2>Ваши билеты</h2>
+            {% if user_tickets %}
+                <div class="tickets">
+                    {% for ticket in user_tickets %}
+                        <div class="ticket-card">
+                            <h3>{{ ticket['title'] }}</h3>
+                            <p><strong>Артист:</strong> {{ ticket['artist'] }}</p>
+                            <p><strong>Локация:</strong> {{ ticket['location'] }}</p>
+                            <p><strong>Город:</strong> {{ ticket['city'] }}</p>
+                            <p><strong>Цена:</strong> {{ ticket['price'] }} ₽</p>
+                            <a class="btn" href="{{ url_for('return_ticket', ticket_id=ticket['id']) }}">Вернуть билет</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>У вас пока нет купленных билетов.</p>
+            {% endif %}
+        </section>
+        
+        
+    </main>
+</body>
+</html>

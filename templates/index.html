@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Билеты на концерты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>Концертные билеты</h1>
+        <nav>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}">Личный кабинет</a>
+                <a href="{{ url_for('logout') }}">Выход</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Вход</a>
+                <a href="{{ url_for('register') }}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        <h2>Доступные билеты</h2>
+        <div class="tickets">
+            {% for ticket in tickets %}
+            <div class="ticket-card">
+                <h3>{{ ticket['title'] }}</h3>
+                <p><strong>Артист:</strong> {{ ticket['artist'] }}</p>
+                <p><strong>Локация:</strong> {{ ticket['location'] }}</p>
+                <p><strong>Город:</strong> {{ ticket['city'] }}</p>
+                <p><strong>Цена:</strong> {{ ticket['price'] }} ₽</p>
+                <p><strong>Осталось билетов:</strong> {{ ticket['quantity'] }}</p>
+                {% if ticket['quantity'] > 0 %}
+                    <a class="btn" href="{{ url_for('buy_ticket', ticket_id=ticket['id']) }}">Купить</a>
+                {% else %}
+                    <button class="btn" disabled>Билеты закончились</button>
+                {% endif %}
+            </div>            
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
